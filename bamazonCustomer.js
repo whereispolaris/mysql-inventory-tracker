@@ -10,13 +10,14 @@ const connection = mysql.createConnection({
     database: "bamazon"
 });
 
-// Display All items
+// Display All  & Run Start shopping
 connection.query("SELECT * FROM products", function (err, res) {
     console.table(res);
+    startShopping();
+    // console.table(res);
 });
 
 function startShopping() {
-
     inquirer.prompt([
         {
             // The first should ask them the ID of the product they would like to buy.
@@ -48,36 +49,28 @@ function startShopping() {
         }
     ]).then(function (answer) {
 
-        // // Get stock quantity first and store it in a variable
-        // var currentItemStock;
-
-        // connection.query("SELECT stock_quantity FROM products WHERE ? "[
-        //     {
-        //         item_id: answer.item_id
-        //     }
-        // ], function (err, res) {
-        //     currentItemStock = res;
-        //     console.log(res);
-        // }
-        // );
-
-        connection.query("UPDATE products SET ? WHERE ?", [
+        // Get stock quantity first and store it in a variable
+        connection.query("SELECT stock_quantity FROM products WHERE ? ", [
             {
-                stock_quantity: answer.quantity,
-            }, {
                 item_id: answer.item_id
             }
         ], function (err, res) {
-            console.log("Something happened");
+            var currentItemStock = res[0].stock_quantity;
+            connection.query("UPDATE products SET ? WHERE ?", [
+                {
+                    stock_quantity: currentItemStock - answer.quantity,
+                }, {
+                    item_id: answer.item_id
+                }
+            ], function (err, res) {
+                console.log("Something happened");
+            }
+            );
         }
         );
-
-        console.log("You have chosen to buy " + answer.quantity + " Items with the item ID " + answer.item_id);
     })
 }
 
-// Call startShopping function after half a second. 
-setTimeout(startShopping, 500);
 
 
 
