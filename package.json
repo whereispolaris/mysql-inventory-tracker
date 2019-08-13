@@ -1,0 +1,23 @@
+{
+  "name": "mysql-inventory-tracker",
+  "version": "1.0.0",
+  "description": "A Node Amazon-like application that takes orders from customers and depletes stock from the store's inventory using a MySQL database.",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whereispolaris/mysql-inventory-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whereispolaris/mysql-inventory-tracker/issues"
+  },
+  "homepage": "https://github.com/whereispolaris/mysql-inventory-tracker#readme",
+  "dependencies": {
+    "inquirer": "^6.5.1"
+  }
+}
