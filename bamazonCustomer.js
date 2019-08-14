@@ -50,12 +50,13 @@ function startShopping() {
     ]).then(function (answer) {
 
         // Get stock quantity first and store it in a variable
-        connection.query("SELECT stock_quantity FROM products WHERE ? ", [
+        connection.query("SELECT stock_quantity, price FROM products WHERE ? ", [
             {
                 item_id: answer.item_id
             }
         ], function (err, res) {
             var currentItemStock = res[0].stock_quantity;
+            var currentItemPrice = res[0].price;
             connection.query("UPDATE products SET ? WHERE ?", [
                 {
                     stock_quantity: currentItemStock - answer.quantity,
@@ -63,7 +64,7 @@ function startShopping() {
                     item_id: answer.item_id
                 }
             ], function (err, res) {
-                console.log("Something happened");
+                console.log("Your grand total is $" + currentItemPrice * answer.quantity);
             }
             );
         }
