@@ -11,17 +11,44 @@ const connection = mysql.createConnection({
     database: "bamazon"
 });
 
+function viewProducts() {
+    connection.query("SELECT * FROM products", function (err, res) {
+        console.table(res);
+        managerStart();
+    });
+}
+
+// End MySQL connection
+function exit() {
+    console.log(chalk.magenta("\n Thanks for stopping by! \n"));
+    connection.end();
+}
+
 function managerStart() {
     inquirer.prompt({
         type: "list",
         message: "Welcome, Mr. Manager. What would you like to do today?",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"],
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "EXIT"],
         name: "managerToDo"
     }).then(function (answer) {
-
-        console.log(answer.managerToDo);
-
+        switch (answer.managerToDo) {
+            case "View Products for Sale":
+                viewProducts();
+                break;
+            case "View Low Inventory":
+                // viewLowInventory();
+                break;
+            case "Add to Inventory":
+                // addToInventory();
+                break;
+            case "Add New Product":
+            // addNewProduct();
+            case "EXIT":
+                exit();
+                break;
+        }
     });
 }
+
 
 managerStart();
