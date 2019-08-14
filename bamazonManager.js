@@ -19,6 +19,14 @@ viewProducts = () => {
     });
 }
 
+viewLowInventory = () => {
+    console.log("\n ITEMS WITH 5 OR LESS IN STOCK: \n");
+    connection.query("SELECT * FROM products WHERE stock_quantity <= 5", function (err, res) {
+        console.table(res);
+        managerStart();
+    })
+}
+
 // End MySQL connection
 exit = () => {
     console.log(chalk.magenta("\n Thanks for stopping by! \n"));
