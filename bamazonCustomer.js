@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const chalk = require('chalk');
 
 // Create MySQL Connection
 const connection = mysql.createConnection({
@@ -57,16 +58,21 @@ function startShopping() {
         ], function (err, res) {
             var currentItemStock = res[0].stock_quantity;
             var currentItemPrice = res[0].price;
-            connection.query("UPDATE products SET ? WHERE ?", [
-                {
-                    stock_quantity: currentItemStock - answer.quantity,
-                }, {
-                    item_id: answer.item_id
-                }
-            ], function (err, res) {
-                console.log("Your grand total is $" + currentItemPrice * answer.quantity);
+            if (currentItemStock < answer.quantity) {
+                console.log(chalk.red("\nWe don't have that many in stock! Please select ") + chalk.yellow(currentItemStock) + chalk.red(" or less.\n"));
             }
-            );
+            else {
+                connection.query("UPDATE products SET ? WHERE ?", [
+                    {
+                        stock_quantity: currentItemStock - answer.quantity,
+                    }, {
+                        item_id: answer.item_id
+                    }
+                ], function (err, res) {
+                    console.log(chalk.green("Your grand total is ") + chalk.yellow("$" + currentItemPrice * answer.quantity));
+                }
+                );
+            }
         }
         );
     })
