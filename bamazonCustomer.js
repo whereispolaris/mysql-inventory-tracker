@@ -12,11 +12,20 @@ const connection = mysql.createConnection({
 });
 
 // Display All  & Run Start shopping
-connection.query("SELECT * FROM products", function (err, res) {
-    console.table(res);
-    startShopping();
-    // console.table(res);
-});
+function browseAndShop() {
+
+    connection.query("SELECT * FROM products", function (err, res) {
+        console.table(res);
+        startShopping();
+        // console.table(res);
+    });
+}
+
+// End MySQL connection
+function exit() {
+    console.log(chalk.magenta("\n Thanks for stopping by! \n"));
+    connection.end();
+}
 
 function startShopping() {
     inquirer.prompt([
@@ -69,7 +78,21 @@ function startShopping() {
                         item_id: answer.item_id
                     }
                 ], function (err, res) {
-                    console.log(chalk.green("Your grand total is ") + chalk.yellow("$" + currentItemPrice * answer.quantity));
+                    console.log(chalk.green("\n Your grand total is ") + chalk.yellow("$" + currentItemPrice * answer.quantity + "\n"));
+                    inquirer.prompt({
+                        type: "list",
+                        message: "What would you like to do now?",
+                        choices: ["SHOP AGAIN", "EXIT"],
+                        name: "whatToDo"
+                    }).then(function (answer) {
+                        switch (answer.whatToDo) {
+                            case "SHOP AGAIN":
+                                browseAndShop();
+                                break;
+                            case "EXIT":
+                                exit();
+                        }
+                    })
                 }
                 );
             }
@@ -78,6 +101,6 @@ function startShopping() {
     })
 }
 
-
+browseAndShop();
 
 
