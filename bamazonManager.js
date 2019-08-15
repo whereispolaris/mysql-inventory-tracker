@@ -28,6 +28,7 @@ viewLowInventory = () => {
     })
 }
 
+// Add more stock to inventory
 addToInventory = () => {
     connection.query("SELECT * FROM products", (err, res) => {
         console.table(res);
@@ -83,6 +84,47 @@ addToInventory = () => {
     });
 }
 
+addNewProduct = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the item you'd like to add?",
+            name: "item_name",
+
+        },
+        {
+            type: "input",
+            message: "Please enter the department of the item:",
+            name: "department_name",
+
+        },
+        {
+            type: "input",
+            message: "What is the price of the item?",
+            name: "price",
+
+        },
+        {
+            type: "input",
+            message: "Please enter the stock amount:",
+            name: "stock_quantity",
+
+        }
+    ]).then(function (answers) {
+        console.log(answers.item_name);
+        console.log(answers.department_name);
+        console.log(answers.price);
+        console.log(answers.stock_quantity);
+        var values = [
+            answers.item_name,
+            answers.department_name,
+            answers.price,
+            answers.stock_quantity
+        ];
+        // THIS IS NOT WORKING
+        connection.query("INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES (?)", values);
+    })
+}
 
 // End MySQL connection
 exit = () => {
@@ -108,7 +150,8 @@ function managerStart() {
                 addToInventory();
                 break;
             case "Add New Product":
-            // addNewProduct();
+                addNewProduct();
+                break;
             case "EXIT":
                 exit();
                 break;
