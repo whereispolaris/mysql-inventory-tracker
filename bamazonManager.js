@@ -121,8 +121,11 @@ addNewProduct = () => {
             answers.price,
             answers.stock_quantity
         ];
-        // THIS IS NOT WORKING
-        connection.query("INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES (?)", values);
+        // Add Item to products table
+        connection.query("INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES (?, ?, ?, ?)", values, function (err, res) {
+            console.log("\n Item successfully added: ")
+            viewProducts();
+        });
     })
 }
 
