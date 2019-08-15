@@ -19,6 +19,7 @@ viewProducts = () => {
     });
 }
 
+// View low inventory (5 in stock or less)
 viewLowInventory = () => {
     console.log("\n ITEMS WITH 5 OR LESS IN STOCK: \n");
     connection.query("SELECT * FROM products WHERE stock_quantity <= 5", function (err, res) {
@@ -26,6 +27,62 @@ viewLowInventory = () => {
         managerStart();
     })
 }
+
+addToInventory = () => {
+    connection.query("SELECT * FROM products", (err, res) => {
+        console.table(res);
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "Please enter the item_id of the product you want to add inventory to: ",
+                name: "itemToStock",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    else {
+                        console.log(" Please enter a number");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: "input",
+                message: "How much more stock would you like to add? ",
+                name: "inventoryAmount",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    else {
+                        console.log(" Please enter a number");
+                        return false;
+                    }
+                }
+            }
+        ]).then(function (answer) {
+            // connection.query("UPDATE");
+            connection.query("SELECT stock_quantity, price FROM products WHERE ? ", [{
+                item_id: answer.itemToStock
+            }], function (err, res) {
+                var currentStockAmount = res[0].stock_quantity;
+                var increaseStockAmount = answer.inventoryAmount;
+                connection.query("UPDATE products SET ? WHERE ?", [
+                    {
+                        stock_quantity: parseFloat(currentStockAmount) + parseFloat(increaseStockAmount)
+                    },
+                    {
+                        item_id: answer.itemToStock
+                    }
+                ], function (err, res) {
+                    managerStart();
+                })
+            })
+
+        })
+    });
+}
+
 
 // End MySQL connection
 exit = () => {
@@ -48,7 +105,7 @@ function managerStart() {
                 viewLowInventory();
                 break;
             case "Add to Inventory":
-                // addToInventory();
+                addToInventory();
                 break;
             case "Add New Product":
             // addNewProduct();
