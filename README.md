@@ -3,7 +3,7 @@ A Node Amazon-like application that takes orders from customers and depletes sto
 
 Technologies Used:
 - [Node.js](https://nodejs.org/en/)
-- [MySQL(npm)](https://www.npmjs.com/package/mysql) HTTP Client
+- [MySQL(npm)](https://www.npmjs.com/package/mysql)
 - [MySQL Workbench](https://www.mysql.com/products/workbench/)
 - [Chalk](https://www.npmjs.com/package/chalk)
 
