@@ -9,7 +9,7 @@ Technologies Used:
 
 ![MySQL Inventory Demo](https://santiagoenciso.com/img/MySQLDemo.gif "MySQL Inventory Demo")
 
-Full Video Demo: https://share.getcloudapp.com/E0ulYRpO
+Full Video Demo: https://santiagoenciso.com/videos/mysql-inventory-node.mov
 
 ## Commands
 
